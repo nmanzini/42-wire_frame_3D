@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 18:19:57 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 20:52:20 by nmanzini         ###   ########.fr       */
+/*   Created: 2017/12/14 20:52:20 by nmanzini          #+#    #+#             */
+/*   Updated: 2017/12/14 21:08:32 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		get_rows(char *file, char **matrix)
+int		insert_rows(char *file, char **matrix)
 {
 	int		fd;
 	char	*line;
@@ -20,7 +20,7 @@ int		get_rows(char *file, char **matrix)
 	int		i;
 
 	i = 0;
-	fd = open(file, O_RDONLY);
+	fd = open(file, O_RDONLm);
 	if (fd == -1)
 		return (-1);
 	while ((result = get_next_line(fd, &line)))
@@ -34,17 +34,30 @@ int		get_rows(char *file, char **matrix)
 	return (0);
 }
 
+int		insert_pixels(char **matrix, int m)
+{
+	int n
+	int i;
+
+	i = 0
+	while (i < m)
+	{
+		
+	}
+	return (n);
+}
+
 int		number_of_rows(char *file)
 {
 	int		fd;
 	char	buff[BUFF_SIZE + 1];
 	int		ret;
 	int		i;
-	int		y;
+	int		m;
 
-	y = 1;
+	m = 1;
 	buff[BUFF_SIZE] = 0;
-	fd = open(file, O_RDONLY);
+	fd = open(file, O_RDONLm);
 	if (fd == -1)
 		return (-1);
 	while ((ret = read(fd, buff, BUFF_SIZE)))
@@ -54,20 +67,20 @@ int		number_of_rows(char *file)
 			return (-1);
 		while (buff[i] != 0)
 			if (buff[i++] == 10)
-				y++;
+				m++;
 	}
 	if (close(fd) == -1)
 		return (-1);
-	return (y);
+	return (m);
 }
 
-int		print_matrix_str(char **matrix,int y)
+int		print_matrix_str(char **matrix,int m)
 {
 	int i;
 	int j;
 
 	i = 0;
-	while (i < y)
+	while (i < m)
 	{
 		j = 0;
 		ft_putendl(matrix[i]);
@@ -78,9 +91,10 @@ int		print_matrix_str(char **matrix,int y)
 
 int		read_input(int ac, char **av)
 {
-	char **matrix;
+	char 	**matrix;
 	// int x;
-	int y;
+	int 	m;
+	int		n;
 
 	ft_putendl(av[1]);
 
@@ -89,16 +103,18 @@ int		read_input(int ac, char **av)
 		ft_putendl("usage: fdf source_files");
 		return (-1);
 	}
-	if ((y = number_of_rows(av[1])) < 0)
+	if ((m = number_of_rows(av[1])) < 0)
 	{
 		ft_putendl("error in number of rows");
 		return (-1);
 	}
 	ft_putendl("allocating matrix...");
-	matrix = (char**)malloc(sizeof(*matrix) * y);
+	matrix = (char**)malloc(sizeof(*matrix) * m);
 	ft_putendl("getting rows...");
 	get_rows(av[1], matrix);
 	ft_putendl("printing as strings...");
-	print_matrix_str(matrix, y);
+	print_matrix_str(matrix, m);
+
+	n = insert_pixels(matrix,m);
 	return (0);
 }
