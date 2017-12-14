@@ -6,13 +6,13 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 18:19:57 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 20:40:07 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/12/14 20:52:20 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		get_rows(char *file, char **matrix, int *x)
+int		get_rows(char *file, char **matrix)
 {
 	int		fd;
 	char	*line;
@@ -28,7 +28,6 @@ int		get_rows(char *file, char **matrix, int *x)
 		if (result == -1)
 			return(-1);
 		matrix[i++] = line;
-		*x += 1;
 	}
 	if (close(fd) == -1)
 		return (-1);
@@ -80,7 +79,7 @@ int		print_matrix_str(char **matrix,int y)
 int		read_input(int ac, char **av)
 {
 	char **matrix;
-	int x;
+	// int x;
 	int y;
 
 	ft_putendl(av[1]);
@@ -98,12 +97,8 @@ int		read_input(int ac, char **av)
 	ft_putendl("allocating matrix...");
 	matrix = (char**)malloc(sizeof(*matrix) * y);
 	ft_putendl("getting rows...");
-	get_rows(av[1], matrix, &x);
+	get_rows(av[1], matrix);
 	ft_putendl("printing as strings...");
 	print_matrix_str(matrix, y);
-	ft_putendl("turning matrix into pixels...");
-
-	ft_putendl("printing as pixels...");
-
 	return (0);
 }
