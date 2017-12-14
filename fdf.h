@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/13 15:05:45 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 17:32:58 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/12/14 18:17:07 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,12 @@ typedef struct		s_mlx_struct
 # define RED	0x00FF0000
 # define GREEN	0x0000FF00
 # define BLUE	0x000000FF
+
+t_mlx_data	*mlx_data_init_return(t_mlx_data *md);
+int			call_keys(int keycode, t_mlx_data *md);
+void		put_square(t_mlx_data *md, int color);
+void		make_image(t_mlx_data *md);
+void		img_square(t_mlx_data *md, unsigned int color);
+void		fill_pixel(t_mlx_data *md, int x, int y, unsigned int color);
 
 #endif

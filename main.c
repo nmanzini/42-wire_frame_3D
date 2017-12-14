@@ -6,18 +6,18 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 17:56:01 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/12/14 18:17:00 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	fill_pixel(t_mlx_data *md, int x, int y, unsigned int color)
+void		fill_pixel(t_mlx_data *md, int x, int y, unsigned int color)
 {
 	md->ip->lst[y * md->width + x] = color;
 }
 
-void	img_square(t_mlx_data *md, unsigned int color)
+void		img_square(t_mlx_data *md, unsigned int color)
 {
 	int i;
 	int j;
@@ -36,7 +36,7 @@ void	img_square(t_mlx_data *md, unsigned int color)
 	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
 }
 
-void	make_image(t_mlx_data *md)
+void		make_image(t_mlx_data *md)
 {
 	int				bpp;
 	int				s_l;
@@ -46,7 +46,7 @@ void	make_image(t_mlx_data *md)
 	md->ip->lst = (int *)mlx_get_data_addr(md->ip->image, &bpp, &s_l, &endian);
 }
 
-void	put_square(t_mlx_data *md, int color)
+void		put_square(t_mlx_data *md, int color)
 {
 	int x;
 	int y;
@@ -64,7 +64,7 @@ void	put_square(t_mlx_data *md, int color)
 	}
 }
 
-int		call_keys(int keycode, t_mlx_data *md)
+int			call_keys(int keycode, t_mlx_data *md)
 {
 	static int flag;
 
@@ -105,7 +105,7 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	return (md);
 } 
 
-int		main(void) 
+int			main(void) 
 {
 	static t_mlx_data 	*md;
 
@@ -119,34 +119,3 @@ int		main(void)
 	mlx_loop(md->mlx);
 	return(0);
 }
-
-// int		main(void) 
-// {
-// 	t_mlx_data 	*md;
-// 	t_mlx_data 	actual_md;
-// 	t_img_prm 	*ip;
-// 	t_img_prm 	actual_ip;
-
-// 	ip = &actual_ip;
-// 	md = &actual_md;
-	
-// 	mlx_data_init(md, ip);
-
-// 	img_square(md, RED);
-// 	mlx_put_image_to_window(md->mlx,md->win,md->ip->image,0,0);
-	
-// 	mlx_key_hook(md->win, call_keys, md);
-// 	// mlx_loop_hook;
-// 	mlx_loop(md->mlx);
-// 	return(0);
-// }
-
-// void	mlx_data_init(t_mlx_data *md, t_img_prm *actual_ip)
-// {
-// 	md->ip = actual_ip;
-// 	md->width = WIDTH;
-// 	md->height = HEIGHT;
-// 	md->mlx = mlx_init();
-// 	md->win = mlx_new_window(md->mlx,md->width,md->height, "fdf nmanzini");
-// 	make_image(md);
-// } 
