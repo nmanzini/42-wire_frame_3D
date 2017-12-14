@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 18:17:00 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/12/14 20:40:08 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,11 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	return (md);
 } 
 
-int			main(void) 
+int			main(int ac, char **av) 
 {
-	static t_mlx_data 	*md;
+	static	t_mlx_data 	*md;
+
+	read_input(ac, av);
 
 	md = mlx_data_init_return(md);
 

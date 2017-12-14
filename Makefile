@@ -6,13 +6,13 @@
 #    By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/29 17:51:18 by nmanzini          #+#    #+#              #
-#    Updated: 2017/12/14 17:35:19 by nmanzini         ###   ########.fr        #
+#    Updated: 2017/12/14 20:09:02 by nmanzini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
-SRC = 	main.c
+SRC = 	main.c input.c
 
 OBJ = $(SRC:.c=.o)
 

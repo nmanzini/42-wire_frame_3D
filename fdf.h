@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/13 15:05:45 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 18:17:07 by nmanzini         ###   ########.fr       */
+/*   Updated: 2017/12/14 20:32:54 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FDF_H
 
 # include "minilibx_macos/mlx.h"
+# include "libft/libft.h"
 
 // check these includes1!!!!!!!!1111!!!111!1!11!
 # include <stdlib.h>
@@ -51,5 +52,10 @@ void		put_square(t_mlx_data *md, int color);
 void		make_image(t_mlx_data *md);
 void		img_square(t_mlx_data *md, unsigned int color);
 void		fill_pixel(t_mlx_data *md, int x, int y, unsigned int color);
+
+int			get_rows(char *file, char **matrix, int *x);
+int			number_of_rows(char *file);
+int			print_matrix_str(char **matrix,int y);
+int			read_input(int ac, char **av);
 
 #endif
