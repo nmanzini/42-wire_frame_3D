@@ -6,13 +6,13 @@
 #    By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/29 17:51:18 by nmanzini          #+#    #+#              #
-#    Updated: 2017/12/14 20:09:02 by nmanzini         ###   ########.fr        #
+#    Updated: 2018/01/12 11:58:52 by nmanzini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
-SRC = 	main.c input.c
+SRC = 	./main.c  ./input.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -27,7 +27,7 @@ MLX_FLAGS = -lmlx -framework Opengl -framework Appkit
 all: $(NAME)
 
 $(OBJ): %.o: %.c
-		-@gcc -c $(W_FLAGS) -I libft/ $< -o $@
+		-@gcc -c  -I libft/ $< -o $@
 
 $(LIBFT):
 	-@ make -C libft 

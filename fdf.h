@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/13 15:05:45 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 20:32:54 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/12 17:11:07 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ typedef struct		s_mlx_struct
 	t_img_prm		*ip;
 }					t_mlx_data;
 
+typedef struct 		s_input
+{
+	int				**matrix;
+	int				m;
+	int				n;
+}					t_input;
+
 # define HEIGHT	1024
 # define WIDTH	1024
 
@@ -53,9 +60,6 @@ void		make_image(t_mlx_data *md);
 void		img_square(t_mlx_data *md, unsigned int color);
 void		fill_pixel(t_mlx_data *md, int x, int y, unsigned int color);
 
-int			get_rows(char *file, char **matrix, int *x);
-int			number_of_rows(char *file);
-int			print_matrix_str(char **matrix,int y);
-int			read_input(int ac, char **av);
+t_input			read_input(int ac, char **av);
 
 #endif

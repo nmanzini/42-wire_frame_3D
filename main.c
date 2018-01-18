@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 21:08:31 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/18 18:03:00 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ int			call_keys(int keycode, t_mlx_data *md)
 		if (flag)
 		{
 			flag = 0;
-			put_square(md, 0x00000000);
+			img_square(md, 0x00000000);
 		}
 		else
 		{
 			flag = 1;
-			put_square(md, 0x00FFFFFF);
+			img_square(md, 0x00FFFFFF);
 		}
 	}
 	return (0);
@@ -105,15 +105,87 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	return (md);
 } 
 
+// void		img_square(t_mlx_data *md, unsigned int color)
+// {
+// 	int i;
+// 	int j;
+
+// 	i = 0;
+// 	while (i < md->width)
+// 	{
+// 		j = 0;
+// 		while (j < md->height)
+// 		{
+// 			fill_pixel(md, i, j, color);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
+// }
+
+void		fill_dot(t_mlx_data *md, int x,int y,int radius, unsigned int color)
+{
+	int i;
+	int	j;
+	int cord;
+	int radius2;
+
+	i = - radius;
+	radius2 = radius * radius;
+	while (i < radius)
+	{
+		j = - radius;
+		while (j < radius)
+		{	
+			cord = (i*i) + (j*j);
+			if (cord <= radius2 )
+				fill_pixel(md,i + x, j+ y, color);
+			j++;
+		}
+		i ++;
+	}
+}
+
+void		matrix_put(t_mlx_data *md, t_input input, unsigned int color)
+{
+	int i;
+	int j;
+	int scal;
+	int cent;
+
+	scal = 50;
+	cent = 50;
+	i = 0;
+	while (i < input.n)
+	{
+		j = 0;
+		while (j < input.m)
+		{
+			fill_dot(md, i * scal + cent, j * scal + cent,input.matrix[j][i]+5, color );
+			j += 1;
+		}
+		i += 1;
+	}
+	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
+}
+
+
+
 int			main(int ac, char **av) 
 {
 	static	t_mlx_data 	*md;
+	static	t_input		input;
 
-	read_input(ac, av);
+	input = read_input(ac, av);
 
 	md = mlx_data_init_return(md);
 
-	img_square(md, RED);
+	// img_square(md, GREEN);
+
+	matrix_put(md,input,WHITE);
+
+
 	mlx_put_image_to_window(md->mlx,md->win,md->ip->image,0,0);
 	
 	mlx_key_hook(md->win, call_keys, md);

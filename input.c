@@ -6,115 +6,193 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 20:52:20 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 21:08:32 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/18 17:41:22 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		insert_rows(char *file, char **matrix)
+/*
+** Frees the list objects and the list itself 
+*/
+
+void	list_str_free(char **list_str)
 {
+	while (*list_str != 0)
+		free(list_str++);
+	free(*list_str);
+}
+
+/*
+** Frees the list objects and the list itself 
+*/
+
+void	list_int_free(int **list_int)
+{
+	while (*list_int != 0)
+		free(list_int++);
+	free(*list_int);
+}
+
+int get_m_n(char *file_path, int *m, int *n)
+{
+	int		fd;
+	char	*lines;
+	char	**list_str;
+
+	lines = 0;
+	fd = open(file_path, O_RDONLY);
+	if (fd == -1)
+		return (-1);
+	while (get_next_line(fd,&lines) > 0)
+	{
+		*m = *m + 1;
+		if (*n ==0)
+		{
+			list_str = ft_strsplit(lines,' ');
+			while (*list_str != NULL)
+			{
+				*n = *n + 1;
+				list_str++;
+			}
+			list_str_free(list_str);
+		}
+	}
+	if (close(fd) == -1)
+		return (-1);
+	return(0);
+}
+
+char	***get_str_matrices( int m, char *file_path)
+{
+	int		i;
 	int		fd;
 	char	*line;
-	int		result;
-	int		i;
+	char	***matrix_str;
 
-	i = 0;
-	fd = open(file, O_RDONLm);
+	fd = open(file_path, O_RDONLY);
 	if (fd == -1)
-		return (-1);
-	while ((result = get_next_line(fd, &line)))
-	{
-		if (result == -1)
-			return(-1);
-		matrix[i++] = line;
-	}
-	if (close(fd) == -1)
-		return (-1);
-	return (0);
-}
-
-int		insert_pixels(char **matrix, int m)
-{
-	int n
-	int i;
-
-	i = 0
+		return (NULL);
+	i = 0;
+	matrix_str = (char***)malloc(sizeof(char**) * (m + 1));
 	while (i < m)
 	{
-		
+		get_next_line(fd,&line);
+		matrix_str[i] = ft_strsplit(line,' ');
+		i++;
 	}
-	return (n);
-}
-
-int		number_of_rows(char *file)
-{
-	int		fd;
-	char	buff[BUFF_SIZE + 1];
-	int		ret;
-	int		i;
-	int		m;
-
-	m = 1;
-	buff[BUFF_SIZE] = 0;
-	fd = open(file, O_RDONLm);
-	if (fd == -1)
-		return (-1);
-	while ((ret = read(fd, buff, BUFF_SIZE)))
-	{
-		i = 0;
-		if (ret < 0)
-			return (-1);
-		while (buff[i] != 0)
-			if (buff[i++] == 10)
-				m++;
-	}
+	matrix_str[i] = NULL;
 	if (close(fd) == -1)
-		return (-1);
-	return (m);
+		return (NULL);
+	return (matrix_str);
 }
 
-int		print_matrix_str(char **matrix,int m)
+int	**str_to_int_matrix(int m, int n, char ***matrix_str)
+{
+	int i;
+	int j;
+	int **matrix;
+
+
+	matrix = (int**)malloc(sizeof(int*) * m);
+
+	i = 0;
+	while (i < m)
+	{	
+		matrix[i] = (int*)malloc(sizeof(int) * n);
+		j = 0;
+		while (j < n)
+		{		
+			matrix[i][j] = ft_atoi(matrix_str[i][j]);
+			j++;
+		}
+		i++;
+	}
+	return (matrix);
+}
+
+void	print_matrix_str(char ***matrix_str, int m, int n)
 {
 	int i;
 	int j;
 
 	i = 0;
 	while (i < m)
-	{
+	{	
 		j = 0;
-		ft_putendl(matrix[i]);
+		while (j < n)
+		{	
+			ft_putstr(matrix_str[i][j]);
+			ft_putchar('\t');
+			j++;
+		}
+		ft_putchar(10);
 		i++;
+
 	}
-	return (0);
 }
 
-int		read_input(int ac, char **av)
+void	print_matrix_int(int **matrix, int m, int n)
 {
-	char 	**matrix;
-	// int x;
-	int 	m;
-	int		n;
+	int i;
+	int j;
 
-	ft_putendl(av[1]);
-
-	if (ac < 2)
-	{
-		ft_putendl("usage: fdf source_files");
-		return (-1);
+	i = 0;
+	while (i < m)
+	{	
+		j = 0;
+		while (j < n)
+		{	
+			ft_putnbr(matrix[i][j]);
+			ft_putchar('\t');
+			j++;
+		}
+		ft_putchar(10);
+		i++;
 	}
-	if ((m = number_of_rows(av[1])) < 0)
-	{
-		ft_putendl("error in number of rows");
-		return (-1);
-	}
-	ft_putendl("allocating matrix...");
-	matrix = (char**)malloc(sizeof(*matrix) * m);
-	ft_putendl("getting rows...");
-	get_rows(av[1], matrix);
-	ft_putendl("printing as strings...");
-	print_matrix_str(matrix, m);
+}
 
-	n = insert_pixels(matrix,m);
-	return (0);
+int	**get_matrix(char *file_path, int *m, int *n)
+{
+	char ***matrix_str;
+	int	**matrix;
+
+	get_m_n(file_path,m,n);
+	ft_putstr("m = ");
+	ft_putnbr(*m);
+	ft_putstr("  n = ");
+	ft_putnbr(*n);
+	ft_putchar(10);
+
+	ft_putendl("making matrix str");
+	matrix_str = get_str_matrices(*m,file_path);
+
+	ft_putendl("printing matrix str");
+	print_matrix_str(matrix_str,*m,*n);
+
+	ft_putendl("making matrix ints");
+	matrix = str_to_int_matrix(*m,*n,matrix_str);
+
+	ft_putendl("printing matrix ints");
+	print_matrix_int(matrix,*m,*n);
+
+	return (matrix);
+}
+
+t_input read_input(int ac, char **av)
+{
+	t_input input;
+
+	int	**matrix;
+	int	m;
+	int	n;
+
+	input.m = 0;
+	input.n = 0;
+	input.matrix = NULL;
+	if (ac)
+		;
+	
+	input.matrix = get_matrix(av[1], &input.m, &input.n);
+	return (input);
 }
