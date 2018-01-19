@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/18 18:03:00 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/19 17:21:16 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void		matrix_put(t_mlx_data *md, t_input input, unsigned int color)
 		j = 0;
 		while (j < input.m)
 		{
-			fill_dot(md, i * scal + cent, j * scal + cent,input.matrix[j][i]+5, color );
+			fill_dot(md, i * scal + cent, j * scal + cent,input.matrix[j][i] + 5, color );
 			j += 1;
 		}
 		i += 1;
@@ -170,6 +170,153 @@ void		matrix_put(t_mlx_data *md, t_input input, unsigned int color)
 	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
 }
 
+void line(t_mlx_data *md, int x1, int y1, int x2, int y2, unsigned int color)
+{
+	int		i;
+	int		j;
+	float	x;
+	float	y;
+	int		xs;
+	int		ys;
+	float	slope;
+
+	i = 0;
+	j = 0;
+	y = y2 - y1;
+	x = x2 - x1;
+	xs = 1;
+	if (x<0)
+		xs = -1;
+	ys = 1;
+	if (y<0)
+		ys = -1;
+	slope = y / x;
+	while (i*i < x*x)
+	{
+		i += xs;
+		j  = slope * i;
+		fill_pixel(md,  i + x1, j + y1 ,color);
+	}
+	i = 0;
+	j = 0;
+	while (j*j < y*y)
+	{
+		j += ys;
+		i  = j / slope;
+		fill_pixel(md,  i + x1, j + y1 ,color);
+	}
+	fill_dot (md,x1,y1,2,RED);
+	fill_dot (md,x2,y2,2,RED);
+}
+
+void line_tester(t_mlx_data *md, int center, int size, int scale)
+{
+	int i = - size;
+	int j = - size;
+	while (i <= size )
+	{
+		j = -size;
+		while (j <= size)
+		{
+			line(md,center,center,center+i,center+j,WHITE);
+			j += scale;
+		}
+		i += scale;
+	}
+
+	fill_dot(md,center,center,3,RED);
+}
+
+void projection1(t_mlx_data *md,t_input input, int center, int scale, unsigned int color)
+{
+	int i;
+	int j;
+	int xp;
+	int yp;
+	float angle;
+	float cosv;
+	float sinv;
+
+	angle= -90;
+	i = 0;
+	j = 0;
+
+	cosv = cos(angle * PI / 180);
+	sinv = sin(angle * PI / 180);
+
+	while (i < input.n)
+	{
+		j = 0;
+		while (j < input.m)
+		{
+			xp = center + scale * (i * cosv - j * sinv);
+			yp = center + scale * (j * cosv + i * sinv);
+			fill_pixel(md, xp, yp, color);
+			j += 1;
+		}
+		i += 1;
+	}
+	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
+}
+
+void projection(t_mlx_data *md,t_input input, int center, int scale, unsigned int color)
+{
+	int 	i;
+	int 	j;
+	double	xp;
+	double	yp;
+	double	zp;
+	double	anglex;
+	double	angley;
+	double	anglez;
+	double	tempx;
+	double	tempy;
+	double	tempz;
+
+	anglex = 42;
+	angley = 42;
+	anglez = 0;
+	i = 0;
+	j = 0;
+
+	while (i < input.n)
+	{
+		j = 0;
+		while (j < input.m)
+		{
+
+			tempx = i;
+			tempy = j;
+			tempz = input.matrix[j][i];
+
+			xp = tempx * cos(anglez * PI / 180) - tempy * sin(anglez * PI / 180);
+			yp = tempx * sin(anglez * PI / 180) + tempy * cos(anglez * PI / 180);
+			zp = tempz;
+
+			tempx = xp;
+			tempy = yp;
+			tempz = zp;
+
+			yp = tempy * cos(anglex * PI / 180) - tempz * sin(anglex * PI / 180);
+			zp = tempy * sin(anglex * PI / 180) + tempz * cos(anglex * PI / 180);
+			xp = tempx;
+
+			tempx = xp;
+			tempy = yp;
+			tempz = zp;
+
+			zp = tempz * cos(angley * PI / 180) - tempx * sin(angley * PI / 180);
+			xp = tempz * sin(angley * PI / 180) + tempx * cos(angley * PI / 180);
+			yp = tempy;
+
+			fill_dot(md, center + xp * scale, center + yp * scale,input.matrix[j][i]/5 + 1, color);
+			
+			j += 1;
+		}
+		i += 1;
+	}
+	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
+}
 
 
 int			main(int ac, char **av) 
@@ -181,11 +328,15 @@ int			main(int ac, char **av)
 
 	md = mlx_data_init_return(md);
 
+	projection(md,input,512,20, WHITE);
+
+	// line_tester(md,512,400,50);
+
 	// img_square(md, GREEN);
 
-	matrix_put(md,input,WHITE);
+	// matrix_put(md,input,WHITE);
 
-
+	
 	mlx_put_image_to_window(md->mlx,md->win,md->ip->image,0,0);
 	
 	mlx_key_hook(md->win, call_keys, md);

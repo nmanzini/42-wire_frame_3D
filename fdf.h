@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/13 15:05:45 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/12 17:11:07 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/19 14:47:11 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <math.h>
 
 typedef struct		s_image_struct
 {
@@ -52,6 +53,10 @@ typedef struct 		s_input
 # define RED	0x00FF0000
 # define GREEN	0x0000FF00
 # define BLUE	0x000000FF
+
+# define _USE_MATH_DEFINES
+
+# define PI		3.14159265
 
 t_mlx_data	*mlx_data_init_return(t_mlx_data *md);
 int			call_keys(int keycode, t_mlx_data *md);
