@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 20:52:20 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/18 17:41:22 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/20 16:53:59 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ void	list_str_free(char **list_str)
 ** Frees the list objects and the list itself 
 */
 
-void	list_int_free(int **list_int)
-{
-	while (*list_int != 0)
-		free(list_int++);
-	free(*list_int);
-}
+// void	list_int_free(int **list_int)
+// {
+// 	while (*list_int != 0)
+// 		free(list_int++);
+// 	free(*list_int);
+// }
 
 int get_m_n(char *file_path, int *m, int *n)
 {
@@ -179,20 +179,50 @@ int	**get_matrix(char *file_path, int *m, int *n)
 	return (matrix);
 }
 
-t_input read_input(int ac, char **av)
+int ***get_matrix_p(int m, int n, int o)
 {
-	t_input input;
+	int i;
+	int j;
+	int k;
+	int ***matrix_p;
 
-	int	**matrix;
-	int	m;
-	int	n;
+	i = 0;
+	j = 0;
+	k = 0;
 
-	input.m = 0;
-	input.n = 0;
-	input.matrix = NULL;
+	matrix_p = (int***)malloc(sizeof(int**) * m);
+	i = 0;
+	while (i < m)
+	{	
+		matrix_p[i] = (int**)malloc(sizeof(int*) * n);
+		j = 0;
+		while (j < n)
+		{		
+			matrix_p[i][j] = (int*)malloc(sizeof(unsigned int) * o);
+			k = 0;
+			while (k < o)
+			{
+				matrix_p[i][j][k] = 0;
+				k++;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (matrix_p);
+
+}
+
+void read_input(t_mlx_data *md,int ac, char **av)
+{
+	t_input in;
+
+	md->in->m = 0;
+	md->in->n = 0;
+	md->in->matrix = NULL;
 	if (ac)
 		;
 	
-	input.matrix = get_matrix(av[1], &input.m, &input.n);
-	return (input);
+	md->in->matrix = get_matrix(av[1], &md->in->m, &md->in->n);
+	md->in->matrix_p = get_matrix_p(md->in->m, md->in->n, 2);
 }

@@ -6,15 +6,16 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/19 17:21:16 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/20 18:38:00 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 void		fill_pixel(t_mlx_data *md, int x, int y, unsigned int color)
-{
-	md->ip->lst[y * md->width + x] = color;
+{	
+	if (x > 0 && x < md->width && y > 0 && y < md->height)
+		md->ip->lst[y * md->width + x] = color;
 }
 
 void		img_square(t_mlx_data *md, unsigned int color)
@@ -64,39 +65,23 @@ void		put_square(t_mlx_data *md, int color)
 	}
 }
 
-int			call_keys(int keycode, t_mlx_data *md)
-{
-	static int flag;
-
-	if (keycode == 53)
-	{
-		mlx_destroy_window(md->mlx, md->win);
-		exit(0);
-	}
-	if (keycode == 49)
-	{
-		if (flag)
-		{
-			flag = 0;
-			img_square(md, 0x00000000);
-		}
-		else
-		{
-			flag = 1;
-			img_square(md, 0x00FFFFFF);
-		}
-	}
-	return (0);
-}
-
 t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 {
 	static t_mlx_data 	actual_md;
 	static t_img_prm 	actual_ip;
+	static t_input		actual_input;
 
 	md = &actual_md;
 
 	md->ip = &actual_ip;
+
+	md->in = &actual_input;
+	md->in->center = 200;
+	md->in->scale = 10;
+	md->in->a_x = 0;
+	md->in->a_y = 0;
+	md->in->a_z = 0;
+
 	md->width = WIDTH;
 	md->height = HEIGHT;
 	md->mlx = mlx_init();
@@ -209,6 +194,40 @@ void line(t_mlx_data *md, int x1, int y1, int x2, int y2, unsigned int color)
 	fill_dot (md,x2,y2,2,RED);
 }
 
+void matrix_line(t_mlx_data *md,unsigned int color)
+{
+	int 	i;
+	int 	j;
+
+
+	i = 0;
+
+	while (i < md->in->n - 1)
+	{
+		j = 0;
+		while (j < md->in->m - 1)
+		{
+			line(md,
+				md->in->matrix_p[j][i][0],
+				md->in->matrix_p[j][i][1],
+				md->in->matrix_p[j][i + 1][0],
+				md->in->matrix_p[j][i + 1][1],
+				color);
+			line(md,
+				md->in->matrix_p[j][i][0],
+				md->in->matrix_p[j][i][1],
+				md->in->matrix_p[j + 1 ][i][0],
+				md->in->matrix_p[j + 1 ][i][1],
+				color);
+			
+			j += 1;
+		}
+		i += 1;
+	}
+	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
+}
+
+
 void line_tester(t_mlx_data *md, int center, int size, int scale)
 {
 	int i = - size;
@@ -227,120 +246,185 @@ void line_tester(t_mlx_data *md, int center, int size, int scale)
 	fill_dot(md,center,center,3,RED);
 }
 
-void projection1(t_mlx_data *md,t_input input, int center, int scale, unsigned int color)
-{
-	int i;
-	int j;
-	int xp;
-	int yp;
-	float angle;
-	float cosv;
-	float sinv;
-
-	angle= -90;
-	i = 0;
-	j = 0;
-
-	cosv = cos(angle * PI / 180);
-	sinv = sin(angle * PI / 180);
-
-	while (i < input.n)
-	{
-		j = 0;
-		while (j < input.m)
-		{
-			xp = center + scale * (i * cosv - j * sinv);
-			yp = center + scale * (j * cosv + i * sinv);
-			fill_pixel(md, xp, yp, color);
-			j += 1;
-		}
-		i += 1;
-	}
-	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
-}
-
-void projection(t_mlx_data *md,t_input input, int center, int scale, unsigned int color)
+void project(t_mlx_data *md)
 {
 	int 	i;
 	int 	j;
 	double	xp;
 	double	yp;
 	double	zp;
-	double	anglex;
-	double	angley;
-	double	anglez;
 	double	tempx;
 	double	tempy;
 	double	tempz;
 
-	anglex = 42;
-	angley = 42;
-	anglez = 0;
 	i = 0;
 	j = 0;
 
-	while (i < input.n)
+	while (i < md->in->n)
 	{
 		j = 0;
-		while (j < input.m)
+		while (j < md->in->m)
 		{
-
 			tempx = i;
 			tempy = j;
-			tempz = input.matrix[j][i];
+			tempz = md->in->matrix[j][i];
 
-			xp = tempx * cos(anglez * PI / 180) - tempy * sin(anglez * PI / 180);
-			yp = tempx * sin(anglez * PI / 180) + tempy * cos(anglez * PI / 180);
+			xp = tempx * cos(md->in->a_z * PI / 180) - tempy * sin(md->in->a_z * PI / 180);
+			yp = tempx * sin(md->in->a_z * PI / 180) + tempy * cos(md->in->a_z * PI / 180);
 			zp = tempz;
 
 			tempx = xp;
 			tempy = yp;
 			tempz = zp;
 
-			yp = tempy * cos(anglex * PI / 180) - tempz * sin(anglex * PI / 180);
-			zp = tempy * sin(anglex * PI / 180) + tempz * cos(anglex * PI / 180);
+			yp = tempy * cos(md->in->a_x * PI / 180) - tempz * sin(md->in->a_x * PI / 180);
+			zp = tempy * sin(md->in->a_x * PI / 180) + tempz * cos(md->in->a_x * PI / 180);
 			xp = tempx;
 
 			tempx = xp;
 			tempy = yp;
 			tempz = zp;
 
-			zp = tempz * cos(angley * PI / 180) - tempx * sin(angley * PI / 180);
-			xp = tempz * sin(angley * PI / 180) + tempx * cos(angley * PI / 180);
+			zp = tempz * cos(md->in->a_y * PI / 180) - tempx * sin(md->in->a_y * PI / 180);
+			xp = tempz * sin(md->in->a_y * PI / 180) + tempx * cos(md->in->a_y * PI / 180);
 			yp = tempy;
+	
+			md->in->matrix_p[j][i][0] = (int) (md->in->center + xp * md->in->scale);
+			md->in->matrix_p[j][i][1] = (int) (md->in->center + yp * md->in->scale);
 
-			fill_dot(md, center + xp * scale, center + yp * scale,input.matrix[j][i]/5 + 1, color);
-			
 			j += 1;
 		}
 		i += 1;
 	}
+}
+
+void display(t_mlx_data *md, unsigned int color)
+{
+	int 	i;
+	int 	j;
+
+	i = 0;
+	j = 0;
+
+	while (i < md->in->n)
+	{
+		j = 0;
+		while (j < md->in->m)
+		{
+			fill_pixel(md, md->in->matrix_p[j][i][0], md->in->matrix_p[j][i][1], color);
+			j += 1;
+		}
+		i += 1;
+	}
+
+	ft_putstr("Display\n");
 	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
 }
+
+void change_angle(t_mlx_data *md,char axis, int d_angle)
+{
+	ft_putstr("Changing ");
+	ft_putchar(axis);
+	ft_putstr(" axis angle of ");
+	ft_putnbr(d_angle);
+	ft_putstr("°. New angle = ");
+	if (axis == 'x')
+	{
+		md->in->a_x += d_angle;
+		ft_putnbr(md->in->a_x);
+	}
+	else if (axis == 'y')
+	{
+		md->in->a_y += d_angle;
+		ft_putnbr(md->in->a_y);
+	}
+	else if (axis == 'z')
+	{
+		md->in->a_z += d_angle;
+		ft_putnbr(md->in->a_z);
+	}
+	ft_putchar(10);
+}
+
+void change_scale(t_mlx_data *md, float d_scale)
+{
+	md->in->scale *= d_scale;
+}
+
+int		call_keys(int keycode, t_mlx_data *md)
+{
+
+	
+	if (keycode == 53)
+	{
+		mlx_destroy_window(md->mlx, md->win);
+		exit(0);
+	}
+	else if (keycode == 49)
+	{
+		ft_putstr("SPACE	");
+		img_square(md, RED);
+	}
+	else if (keycode == 11)
+	{
+		ft_putstr("B		");
+		img_square(md, BLACK);
+	}
+	else if (keycode == 126)
+	{
+		ft_putstr("UP		");
+		change_angle(md, 'x', 5);
+	}
+	else if (keycode == 125)
+	{
+		ft_putstr("DWN		");
+		change_angle(md, 'x', -5);
+	}
+	else if (keycode == 124)
+	{
+		ft_putstr("RIGHT	");
+		change_angle(md, 'y', 5);
+	}
+	else if (keycode == 123)
+	{
+		ft_putstr("LEFT		");
+		change_angle(md, 'y', -5);
+	}
+	else if (keycode == 69)
+	{
+		ft_putstr("+		");
+		change_scale(md,1.25);
+	}
+	else if (keycode == 78)
+	{
+		ft_putstr("-		");
+		change_scale(md, 0.75);
+	}
+	project(md);
+	img_square(md, BLACK);
+	display(md,WHITE);
+	matrix_line(md,WHITE);
+
+	return (0);
+}
+
 
 
 int			main(int ac, char **av) 
 {
 	static	t_mlx_data 	*md;
-	static	t_input		input;
-
-	input = read_input(ac, av);
-
+	
 	md = mlx_data_init_return(md);
 
-	projection(md,input,512,20, WHITE);
+	read_input(md, ac, av);
 
-	// line_tester(md,512,400,50);
+	// change_scale(md,2);
 
-	// img_square(md, GREEN);
-
-	// matrix_put(md,input,WHITE);
-
-	
-	mlx_put_image_to_window(md->mlx,md->win,md->ip->image,0,0);
+	project(md);
+	display(md,WHITE);
+	matrix_line(md,WHITE);
 	
 	mlx_key_hook(md->win, call_keys, md);
-	// mlx_loop_hook;
 	mlx_loop(md->mlx);
 	return(0);
 }
