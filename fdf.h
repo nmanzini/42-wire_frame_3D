@@ -33,10 +33,11 @@ typedef struct 		s_input
 {
 	int				m;
 	int				n;
-	int				a_x;
-	int				a_y;
-	int				a_z;
-	double			scale;
+	float			a_x;
+	float			a_y;
+	float			a_z;
+	float			scale;
+	float			height;
 	int				center;
 	char			***matrix_str;
 	int				**matrix;

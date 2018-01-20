@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/20 18:38:00 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/20 19:11:15 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	md->in = &actual_input;
 	md->in->center = 200;
 	md->in->scale = 10;
+	md->in->height = 0.2;
 	md->in->a_x = 0;
 	md->in->a_y = 0;
 	md->in->a_z = 0;
@@ -202,24 +203,25 @@ void matrix_line(t_mlx_data *md,unsigned int color)
 
 	i = 0;
 
-	while (i < md->in->n - 1)
+	while (i < md->in->n)
 	{
 		j = 0;
-		while (j < md->in->m - 1)
+		while (j < md->in->m )
 		{
-			line(md,
+			if (i + 1 < md->in->n) 
+				line(md,
 				md->in->matrix_p[j][i][0],
 				md->in->matrix_p[j][i][1],
 				md->in->matrix_p[j][i + 1][0],
 				md->in->matrix_p[j][i + 1][1],
 				color);
-			line(md,
+			if (j + 1 < md->in->m) 
+				line(md,
 				md->in->matrix_p[j][i][0],
 				md->in->matrix_p[j][i][1],
 				md->in->matrix_p[j + 1 ][i][0],
 				md->in->matrix_p[j + 1 ][i][1],
 				color);
-			
 			j += 1;
 		}
 		i += 1;
@@ -267,7 +269,7 @@ void project(t_mlx_data *md)
 		{
 			tempx = i;
 			tempy = j;
-			tempz = md->in->matrix[j][i];
+			tempz = md->in->matrix[j][i] * md->in->height;
 
 			xp = tempx * cos(md->in->a_z * PI / 180) - tempy * sin(md->in->a_z * PI / 180);
 			yp = tempx * sin(md->in->a_z * PI / 180) + tempy * cos(md->in->a_z * PI / 180);
@@ -321,7 +323,7 @@ void display(t_mlx_data *md, unsigned int color)
 	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
 }
 
-void change_angle(t_mlx_data *md,char axis, int d_angle)
+void change_angle(t_mlx_data *md,char axis, float d_angle)
 {
 	ft_putstr("Changing ");
 	ft_putchar(axis);
@@ -343,7 +345,24 @@ void change_angle(t_mlx_data *md,char axis, int d_angle)
 		md->in->a_z += d_angle;
 		ft_putnbr(md->in->a_z);
 	}
-	ft_putchar(10);
+	ft_putstr("°\n");
+}
+
+void display_change_angle(t_mlx_data *md,char axis, float d_angle)
+{	
+	int splits;
+	int now;
+
+	splits = 50;
+	now = 0;
+	while (now<splits)
+	{
+		now++;
+		change_angle(md, axis, d_angle / splits);
+		project(md);
+		// img_square(md, BLACK);
+		matrix_line(md,WHITE);
+	}
 }
 
 void change_scale(t_mlx_data *md, float d_scale)
@@ -353,8 +372,6 @@ void change_scale(t_mlx_data *md, float d_scale)
 
 int		call_keys(int keycode, t_mlx_data *md)
 {
-
-	
 	if (keycode == 53)
 	{
 		mlx_destroy_window(md->mlx, md->win);
@@ -373,22 +390,22 @@ int		call_keys(int keycode, t_mlx_data *md)
 	else if (keycode == 126)
 	{
 		ft_putstr("UP		");
-		change_angle(md, 'x', 5);
+		change_angle(md, 'x', 10);
 	}
 	else if (keycode == 125)
 	{
 		ft_putstr("DWN		");
-		change_angle(md, 'x', -5);
+		change_angle(md, 'x', -10);
 	}
 	else if (keycode == 124)
 	{
 		ft_putstr("RIGHT	");
-		change_angle(md, 'y', 5);
+		change_angle(md, 'y', 10);
 	}
 	else if (keycode == 123)
 	{
-		ft_putstr("LEFT		");
-		change_angle(md, 'y', -5);
+		ft_putstr("LEFT	");
+		change_angle(md, 'y', -10);
 	}
 	else if (keycode == 69)
 	{
@@ -402,12 +419,9 @@ int		call_keys(int keycode, t_mlx_data *md)
 	}
 	project(md);
 	img_square(md, BLACK);
-	display(md,WHITE);
 	matrix_line(md,WHITE);
-
 	return (0);
 }
-
 
 
 int			main(int ac, char **av) 
@@ -421,7 +435,7 @@ int			main(int ac, char **av)
 	// change_scale(md,2);
 
 	project(md);
-	display(md,WHITE);
+	// display(md,WHITE);
 	matrix_line(md,WHITE);
 	
 	mlx_key_hook(md->win, call_keys, md);
