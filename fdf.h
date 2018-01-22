@@ -70,7 +70,7 @@ typedef struct		s_mlx_struct
 
 # define _USE_MATH_DEFINES
 
-# define PI		3.14159265
+# define PR	3.14159265 / 180
 
 t_mlx_data	*mlx_data_init_return(t_mlx_data *md);
 int			call_keys(int keycode, t_mlx_data *md);
