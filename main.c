@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/22 17:30:04 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/22 18:19:26 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	md->ip = &actual_ip;
 
 	md->in = &actual_input;
-	md->in->c_x = 200;
-	md->in->c_y = 200;
+	md->in->c_x = WIDTH/3;
+	md->in->c_y = HEIGHT/3;
 	md->in->scale = 10;
 	md->in->height = 0.2;
 	md->in->a_x = 20;
@@ -85,7 +85,7 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	md->in->a_z = 20;
 	md->in->line_color = WHITE;
 	md->in->dots_color = BLUE;
-	md->in->dots_size = 2;
+	md->in->dots_size = 0;
 
 	md->width = WIDTH;
 	md->height = HEIGHT;
@@ -434,6 +434,24 @@ void	change_color(t_mlx_data *md, char obj, unsigned int color)
 	ft_putchar(10);
 }
 
+void animate_the_fucker(t_mlx_data *md,char obj, int ammount)
+{
+	int steps;
+	int step;
+
+	steps = 500;
+	step = 0;
+
+	while (step < steps)
+	{
+		ft_putendl("move x ");
+		change_center(md,'x', 1);
+		project(md);
+		// img_square(md, BLACK);
+		matrix_line(md, md->in->line_color);
+		step++;
+	}
+}
 
 int		call_keys(int keycode, t_mlx_data *md)
 {
@@ -442,7 +460,6 @@ int		call_keys(int keycode, t_mlx_data *md)
 		mlx_destroy_window(md->mlx, md->win);
 		exit(0);
 	}
-
 	else if (keycode == 49)
 	{
 		ft_putstr("SPACE	");
@@ -453,8 +470,6 @@ int		call_keys(int keycode, t_mlx_data *md)
 		ft_putstr("B		");
 		img_square(md, BLUE);
 	}
-
-// 
 	else if (keycode == 126)
 	{
 		ft_putstr("UP		");
@@ -485,8 +500,6 @@ int		call_keys(int keycode, t_mlx_data *md)
 		ft_putstr("Q	");
 		change_angle(md, 'z', -10);
 	}
-
-
 	else if (keycode == 69)
 	{
 		ft_putstr("+		");
@@ -507,8 +520,6 @@ int		call_keys(int keycode, t_mlx_data *md)
 		ft_putstr("-		");
 		change_scale(md, 'd', +1);
 	}
-
-
 	else if (keycode == 2)
 	{
 		ft_putstr("D		");
@@ -529,7 +540,6 @@ int		call_keys(int keycode, t_mlx_data *md)
 		ft_putstr("S		");
 		change_center(md, 'y', +20);
 	}
-
 	else if (keycode == 82)
 	{
 		ft_putstr("0 numpad	");
@@ -550,10 +560,23 @@ int		call_keys(int keycode, t_mlx_data *md)
 		ft_putstr("3 numpad	");
 		change_color(md,'l', BLUE);
 	}
+	else if (keycode == 36)
+	{
+		int step = 0;
+		while (step < 500)
+		{
+			ft_putendl("move x ");
+			change_center(md,'x', 1);
+			project(md);
+			// img_square(md, BLACK);
+			matrix_line(md, md->in->line_color);
+			step++;
+		}
+	}
 
 	project(md);
-	img_square(md, BLACK);
-	matrix_line(md,WHITE);
+	// img_square(md, BLACK);
+	// matrix_line(md, md->in->line_color);
 	return (0);
 }
 
