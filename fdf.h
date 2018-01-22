@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/13 15:05:45 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/20 15:32:33 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/22 17:03:05 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,11 @@ typedef struct 		s_input
 	float			a_z;
 	float			scale;
 	float			height;
-	int				center;
+	int				c_x;
+	int				c_y;
+	unsigned int	line_color;
+	unsigned int	dots_color;
+	int				dots_size;
 	char			***matrix_str;
 	int				**matrix;
 	int				***matrix_p;

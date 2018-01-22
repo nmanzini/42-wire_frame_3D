@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/20 19:11:15 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/22 17:30:04 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,16 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	md->ip = &actual_ip;
 
 	md->in = &actual_input;
-	md->in->center = 200;
+	md->in->c_x = 200;
+	md->in->c_y = 200;
 	md->in->scale = 10;
 	md->in->height = 0.2;
-	md->in->a_x = 0;
-	md->in->a_y = 0;
-	md->in->a_z = 0;
+	md->in->a_x = 20;
+	md->in->a_y = 20;
+	md->in->a_z = 20;
+	md->in->line_color = WHITE;
+	md->in->dots_color = BLUE;
+	md->in->dots_size = 2;
 
 	md->width = WIDTH;
 	md->height = HEIGHT;
@@ -191,8 +195,8 @@ void line(t_mlx_data *md, int x1, int y1, int x2, int y2, unsigned int color)
 		i  = j / slope;
 		fill_pixel(md,  i + x1, j + y1 ,color);
 	}
-	fill_dot (md,x1,y1,2,RED);
-	fill_dot (md,x2,y2,2,RED);
+	fill_dot (md,x1,y1,md->in->dots_size,md->in->dots_color);
+	fill_dot (md,x2,y2,md->in->dots_size,md->in->dots_color);
 }
 
 void matrix_line(t_mlx_data *md,unsigned int color)
@@ -214,14 +218,14 @@ void matrix_line(t_mlx_data *md,unsigned int color)
 				md->in->matrix_p[j][i][1],
 				md->in->matrix_p[j][i + 1][0],
 				md->in->matrix_p[j][i + 1][1],
-				color);
+				md->in->line_color);
 			if (j + 1 < md->in->m) 
 				line(md,
 				md->in->matrix_p[j][i][0],
 				md->in->matrix_p[j][i][1],
 				md->in->matrix_p[j + 1 ][i][0],
 				md->in->matrix_p[j + 1 ][i][1],
-				color);
+				md->in->line_color);
 			j += 1;
 		}
 		i += 1;
@@ -230,34 +234,34 @@ void matrix_line(t_mlx_data *md,unsigned int color)
 }
 
 
-void line_tester(t_mlx_data *md, int center, int size, int scale)
-{
-	int i = - size;
-	int j = - size;
-	while (i <= size )
-	{
-		j = -size;
-		while (j <= size)
-		{
-			line(md,center,center,center+i,center+j,WHITE);
-			j += scale;
-		}
-		i += scale;
-	}
+// void line_tester(t_mlx_data *md, int center, int size, int scale)
+// {
+// 	int i = - size;
+// 	int j = - size;
+// 	while (i <= size )
+// 	{
+// 		j = -size;
+// 		while (j <= size)
+// 		{
+// 			line(md,center,center,center+i,center+j,WHITE);
+// 			j += scale;
+// 		}
+// 		i += scale;
+// 	}
 
-	fill_dot(md,center,center,3,RED);
-}
+// 	fill_dot(md,center,center,3,RED);
+// }
 
 void project(t_mlx_data *md)
 {
 	int 	i;
 	int 	j;
-	double	xp;
-	double	yp;
-	double	zp;
-	double	tempx;
-	double	tempy;
-	double	tempz;
+	float	xp;
+	float	yp;
+	float	zp;
+	float	tempx;
+	float	tempy;
+	float	tempz;
 
 	i = 0;
 	j = 0;
@@ -291,8 +295,8 @@ void project(t_mlx_data *md)
 			xp = tempz * sin(md->in->a_y * PI / 180) + tempx * cos(md->in->a_y * PI / 180);
 			yp = tempy;
 	
-			md->in->matrix_p[j][i][0] = (int) (md->in->center + xp * md->in->scale);
-			md->in->matrix_p[j][i][1] = (int) (md->in->center + yp * md->in->scale);
+			md->in->matrix_p[j][i][0] = (int) (md->in->c_x + xp * md->in->scale);
+			md->in->matrix_p[j][i][1] = (int) (md->in->c_y + yp * md->in->scale);
 
 			j += 1;
 		}
@@ -348,27 +352,88 @@ void change_angle(t_mlx_data *md,char axis, float d_angle)
 	ft_putstr("°\n");
 }
 
-void display_change_angle(t_mlx_data *md,char axis, float d_angle)
-{	
-	int splits;
-	int now;
+// void display_change_angle(t_mlx_data *md,char axis, float d_angle)
+// {	
+// 	int splits;
+// 	int now;
 
-	splits = 50;
-	now = 0;
-	while (now<splits)
-	{
-		now++;
-		change_angle(md, axis, d_angle / splits);
-		project(md);
-		// img_square(md, BLACK);
-		matrix_line(md,WHITE);
-	}
-}
+// 	splits = 10;
+// 	now = 0;
+// 	while (now<splits)
+// 	{
+// 		now++;
+// 		ft_putstr("display_change_angle ");
+// 		ft_putnbr(now);
+// 		ft_putchar('/');
+// 		ft_putnbr(splits);
+// 		ft_putstr(": ");
 
-void change_scale(t_mlx_data *md, float d_scale)
+// 		change_angle(md, axis, d_angle / splits);
+// 		project(md);
+// 		img_square(md, BLACK);
+// 		matrix_line(md,WHITE);
+// 	}
+// }
+
+void	change_scale(t_mlx_data *md,char obj, float d_scale)
 {
-	md->in->scale *= d_scale;
+	ft_putstr("Changing scale of");
+	if (obj == 'i')
+	{
+		ft_putstr("image to ");
+		md->in->scale += d_scale;
+		ft_putnbr(md->in->scale);
+	}
+	else if (obj == 'd')
+	{
+		ft_putstr("dots to ");
+		md->in->dots_size += d_scale;
+		ft_putnbr(md->in->dots_size);
+	}
+	ft_putchar(10);
 }
+
+void	change_center(t_mlx_data *md, char axis, int ammount)
+{
+	ft_putstr("Changing ");
+	ft_putchar(axis);
+	ft_putstr(" axis center position of ");
+	ft_putnbr(ammount);
+	ft_putstr(". New position = ");
+	if (axis == 'x')
+	{
+		md->in->c_x += ammount;
+		ft_putnbr(md->in->c_x);
+	}
+	else if (axis == 'y')
+	{
+		md->in->c_y += ammount;
+		ft_putnbr(md->in->c_y);
+	}
+	ft_putchar(10);
+}
+
+void	change_color(t_mlx_data *md, char obj, unsigned int color)
+{
+	ft_putstr("Changing color of ");
+	if (obj == 'l')
+	{
+		ft_putstr("lines to ");
+		md->in->line_color = color;
+		ft_putnbr(md->in->line_color);
+	}
+	else if (obj == 'd')
+	{
+		ft_putstr("dots to ");
+		md->in->dots_color = color;
+		ft_putnbr(md->in->dots_color);
+	}
+	ft_putnbr(color);
+	ft_putstr(".\n");
+
+	ft_putchar(10);
+}
+
 
 int		call_keys(int keycode, t_mlx_data *md)
 {
@@ -377,16 +442,19 @@ int		call_keys(int keycode, t_mlx_data *md)
 		mlx_destroy_window(md->mlx, md->win);
 		exit(0);
 	}
+
 	else if (keycode == 49)
 	{
 		ft_putstr("SPACE	");
-		img_square(md, RED);
+		img_square(md, BLACK);
 	}
 	else if (keycode == 11)
 	{
 		ft_putstr("B		");
-		img_square(md, BLACK);
+		img_square(md, BLUE);
 	}
+
+// 
 	else if (keycode == 126)
 	{
 		ft_putstr("UP		");
@@ -407,16 +475,82 @@ int		call_keys(int keycode, t_mlx_data *md)
 		ft_putstr("LEFT	");
 		change_angle(md, 'y', -10);
 	}
+	else if (keycode == 14)
+	{
+		ft_putstr("E	");
+		change_angle(md, 'z', 10);
+	}
+	else if (keycode == 12)
+	{
+		ft_putstr("Q	");
+		change_angle(md, 'z', -10);
+	}
+
+
 	else if (keycode == 69)
 	{
 		ft_putstr("+		");
-		change_scale(md,1.25);
+		change_scale(md, 'i', +2);
 	}
 	else if (keycode == 78)
 	{
 		ft_putstr("-		");
-		change_scale(md, 0.75);
+		change_scale(md, 'i', -2);
 	}
+	else if (keycode == 43)
+	{
+		ft_putstr("+		");
+		change_scale(md, 'd', -1);
+	}
+	else if (keycode == 47)
+	{
+		ft_putstr("-		");
+		change_scale(md, 'd', +1);
+	}
+
+
+	else if (keycode == 2)
+	{
+		ft_putstr("D		");
+		change_center(md, 'x', +20);
+	}
+	else if (keycode == 0)
+	{
+		ft_putstr("A		");
+		change_center(md, 'x', -20);
+	}
+	else if (keycode == 13)
+	{
+		ft_putstr("W		");
+		change_center(md, 'y', -20);
+	}
+	else if (keycode == 1)
+	{
+		ft_putstr("S		");
+		change_center(md, 'y', +20);
+	}
+
+	else if (keycode == 82)
+	{
+		ft_putstr("0 numpad	");
+		change_color(md,'l', WHITE);
+	}
+	else if (keycode == 83)
+	{
+		ft_putstr("1 numpad	");
+		change_color(md,'l', RED);
+	}
+	else if (keycode == 84)
+	{
+		ft_putstr("2 numpad	");
+		change_color(md,'l', GREEN);
+	}
+	else if (keycode == 85)
+	{
+		ft_putstr("3 numpad	");
+		change_color(md,'l', BLUE);
+	}
+
 	project(md);
 	img_square(md, BLACK);
 	matrix_line(md,WHITE);

@@ -210,7 +210,6 @@ int ***get_matrix_p(int m, int n, int o)
 		i++;
 	}
 	return (matrix_p);
-
 }
 
 void read_input(t_mlx_data *md,int ac, char **av)
