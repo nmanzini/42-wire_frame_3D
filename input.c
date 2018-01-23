@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 20:52:20 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/23 18:05:46 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/23 18:24:30 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		**str_to_int_matrix(int m, int n, char ***matrix_str)
 		while (j < n)
 		{
 			if (!(matrix_str[i][j]))
-				return (NULL);	
+				return (NULL);
 			matrix[i][j] = ft_atoi(matrix_str[i][j]);
 			j++;
 		}
@@ -71,17 +71,10 @@ int		**get_matrix(char *file_path, int *m, int *n)
 
 	if (get_m_n(file_path, m, n))
 		return (NULL);
-	// ft_putstr("m = ");
-	// ft_putnbr(*m);
-	// ft_putstr("  n = ");
-	// ft_putnbr(*n);
-	// ft_putchar(10);
 	if (!(matrix_str = get_str_matrices(*m, file_path)))
-		return(NULL);
-	// print_matrix_str(matrix_str,*m,*n);
+		return (NULL);
 	if (!(matrix = str_to_int_matrix(*m, *n, matrix_str)))
-		return(NULL);
-	// print_matrix_int(matrix,*m,*n);
+		return (NULL);
 	return (matrix);
 }
 

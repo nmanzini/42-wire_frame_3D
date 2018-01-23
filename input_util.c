@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 13:49:31 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/23 18:18:34 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/23 18:24:58 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	print_matrix_int(int **matrix, int m, int n)
 
 int		get_n(char *line)
 {
-	int	n;
-	char **list_str;
+	int		n;
+	char	**list_str;
 
 	n = 0;
 	list_str = ft_strsplit(line, ' ');
@@ -70,7 +70,6 @@ int		get_n(char *line)
 	{
 		n++;
 	}
-	// list_str_free(list_str);
 	return (n);
 }
 
@@ -82,7 +81,6 @@ int		get_m_n(char *file_path, int *m, int *n)
 	int		n_old;
 
 	n_old = 0;
-
 	lines = 0;
 	fd = open(file_path, O_RDONLY);
 	if (fd == -1)
