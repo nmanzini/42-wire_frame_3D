@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:59:23 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 12:31:18 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:30:58 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void	call_keys_scale(int keycode, t_mlx_data *md)
 	if (keycode == 69)
 	{
 		ft_putstr("+		");
-		change_scale(md, 'i', +2);
+		change_scale(md, 'i', +1);
 	}
 	else if (keycode == 78)
 	{
 		ft_putstr("-		");
-		change_scale(md, 'i', -2);
+		change_scale(md, 'i', -1);
 	}
 	else if (keycode == 43)
 	{
@@ -71,6 +71,20 @@ void	call_keys_scale(int keycode, t_mlx_data *md)
 	{
 		ft_putstr("-		");
 		change_scale(md, 'd', +1);
+	}
+}
+
+void	call_keys_camera(int keycode, t_mlx_data *md)
+{
+	if (keycode == 92)
+	{
+		ft_putstr("9		");
+		change_scale(md, 'c', 1.5);
+	}
+	else if (keycode == 88)
+	{
+		ft_putstr("6		");
+		change_scale(md, 'c', 0.75);
 	}
 }
 
@@ -95,29 +109,5 @@ void	call_keys_center(int keycode, t_mlx_data *md)
 	{
 		ft_putstr("S		");
 		change_center(md, 'y', +20);
-	}
-}
-
-void	call_keys_color(int keycode, t_mlx_data *md)
-{
-	if (keycode == 82)
-	{
-		ft_putstr("0		");
-		change_color(md, 'l', WHITE);
-	}
-	else if (keycode == 83)
-	{
-		ft_putstr("1		");
-		change_color(md, 'l', RED);
-	}
-	else if (keycode == 84)
-	{
-		ft_putstr("2		");
-		change_color(md, 'l', GREEN);
-	}
-	else if (keycode == 85)
-	{
-		ft_putstr("3		");
-		change_color(md, 'l', BLUE);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 12:07:46 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 17:51:00 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,38 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	md->width = WIDTH;
 	md->height = HEIGHT;
 	md->in = &actual_input;
-	md->in->c_x = WIDTH / 3;
-	md->in->c_y = HEIGHT / 3;
-	md->in->scale = 10;
+	md->in->c_x = WIDTH / 2;
+	md->in->c_y = HEIGHT / 2;
+	md->in->scale = +20;
 	md->in->height = 0.2;
-	md->in->a_x = 20;
-	md->in->a_y = 20;
-	md->in->a_z = 20;
+	md->in->a_x = 0;
+	md->in->a_y = 0;
+	md->in->a_z = 0;
+	md->in->cam_d_f = 2;
 	md->in->line_color = WHITE;
 	md->in->dots_color = RED;
 	md->in->back_color = BLACK;
 	md->in->dots_size = 0;
+	md->type = 'p';
 	md->mlx = mlx_init();
 	md->win = mlx_new_window(md->mlx, md->width, md->height, "fdf nmanzini");
 	make_image(md);
 	return (md);
 }
+/*
+** dx = x2 - x1 = p2[0] - p1[0]
+** dy = y2 - y1 = (p2[1] - p1[1])
+** xs = 1;
+** if (dx < 0)
+** 	xs = -1;
+** slope = dx / dy
+**
+** while (i * i < dx * dx)
+	{
+		i += xs;
+		fill_pixel(md, i + p1[0], slope * i + p1[1], color);
+	}
+*/
 
 void		line(t_mlx_data *md, int *p1, int *p2, unsigned int color)
 {
@@ -104,8 +120,9 @@ int			main(int ac, char **av)
 	md = mlx_data_init_return(md);
 	if (read_input(md, ac, av))
 		return (1);
-	project(md);
-	matrix_line(md, WHITE);
+	// project_pe(md);
+	// matrix_line(md, WHITE);
+	display(md);
 	mlx_key_hook(md->win, call_keys, md);
 	mlx_loop(md->mlx);
 	return (0);

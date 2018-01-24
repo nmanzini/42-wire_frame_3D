@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:11:28 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 12:24:34 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 17:54:17 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,52 +27,28 @@ void	call_keys_general(int keycode, t_mlx_data *md)
 	}
 }
 
-void	call_keys_color_d(int keycode, t_mlx_data *md)
+void	call_keys_type(int keycode, t_mlx_data *md)
 {
-	if (keycode == 18)
+	if (keycode == 35)
 	{
-		ft_putstr("0		");
-		change_color(md, 'd', WHITE);
+		ft_putstr("P		");
+		change_type(md, 'p');
 	}
-	else if (keycode == 19)
+	else if (keycode == 34)
 	{
-		ft_putstr("1		");
-		change_color(md, 'd', RED);
-	}
-	else if (keycode == 20)
-	{
-		ft_putstr("2		");
-		change_color(md, 'd', GREEN);
-	}
-	else if (keycode == 21)
-	{
-		ft_putstr("3		");
-		change_color(md, 'd', BLUE);
+		ft_putstr("I		");
+		change_type(md, 'i');
 	}
 }
 
-void	call_keys_color_b(int keycode, t_mlx_data *md)
+void	display(t_mlx_data *md)
 {
-	if (keycode == 6)
-	{
-		ft_putstr("Z		");
-		change_color(md, 'b', BLACK);
-	}
-	else if (keycode == 7)
-	{
-		ft_putstr("X		");
-		change_color(md, 'b', RED);
-	}
-	else if (keycode == 8)
-	{
-		ft_putstr("C		");
-		change_color(md, 'b', GREEN);
-	}
-	else if (keycode == 9)
-	{
-		ft_putstr("V		");
-		change_color(md, 'b', BLUE);
-	}
+	if (md->type == 'i')
+		project_is(md);
+	else if(md->type == 'p')
+		project_pe(md);
+	img_square(md, md->in->back_color);
+	matrix_line(md, md->in->line_color);
 }
 
 int		call_keys(int keycode, t_mlx_data *md)
@@ -82,11 +58,11 @@ int		call_keys(int keycode, t_mlx_data *md)
 	call_keys_arrows(keycode, md);
 	call_keys_scale(keycode, md);
 	call_keys_center(keycode, md);
-	call_keys_color(keycode, md);
+	call_keys_color_l(keycode, md);
 	call_keys_color_d(keycode, md);
 	call_keys_color_b(keycode, md);
-	project(md);
-	img_square(md, md->in->back_color);
-	matrix_line(md, md->in->line_color);
+	call_keys_type(keycode, md);
+	call_keys_camera(keycode, md);
+	display(md);
 	return (0);
 }

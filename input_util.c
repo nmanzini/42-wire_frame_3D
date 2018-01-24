@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 13:49:31 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/23 18:24:58 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:19:18 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ int		get_n(char *line)
 	while (list_str[n] != NULL)
 	{
 		n++;
+		free(list_str[n]);
 	}
+	free(list_str[n]);
 	return (n);
 }
 
@@ -99,4 +101,47 @@ int		get_m_n(char *file_path, int *m, int *n)
 	if (close(fd) == -1)
 		return (-1);
 	return (0);
+}
+
+void	get_min_max(t_mlx_data *md)
+{
+	int max;
+	int min;
+	int i;
+	int j;
+	int value;
+	
+	max = md->in->matrix[0][0];
+	min = md->in->matrix[0][0];
+	i = 0;
+	while (i < md->in->m)
+	{
+		j = 0;
+		while (j < md->in->n)
+		{
+			value = md->in->matrix[i][j];
+			if (value > max)
+				max = value;
+			else if (value < min)
+				min = value;
+			j++;
+		}
+		i++;
+	}
+	md->in->min = min;
+	md->in->max = max;
+}
+
+void	get_max_size(t_mlx_data *md)
+{
+	int max_size;
+	int delta_z;
+
+	get_min_max(md);
+	delta_z = md->in->max - md->in->min;
+	max_size = 1;
+	max_size += md->in->m * md->in->m;
+	max_size += md->in->n * md->in->n;
+	max_size += delta_z * delta_z;
+	md->in->max_size = sqrt(max_size);
 }

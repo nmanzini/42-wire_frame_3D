@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/13 15:05:45 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 12:36:24 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:14:26 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ typedef struct 		s_input
 {
 	int				m;
 	int				n;
+	int				max;
+	int				min;
+	int				max_size;
+	float			cam_d_f;
 	float			a_x;
 	float			a_y;
 	float			a_z;
@@ -49,6 +53,7 @@ typedef struct		s_mlx_struct
 	void			*win;
 	int				height;
 	int				width;
+	char			type;
 	t_img_prm		*ip;
 	t_input			*in;
 }					t_mlx_data;
@@ -71,7 +76,6 @@ typedef struct		s_mlx_struct
 t_mlx_data	*mlx_data_init_return(t_mlx_data *md);
 void		line(t_mlx_data *md, int *p1, int *p2, unsigned int color);
 void		matrix_line(t_mlx_data *md, unsigned int color);
-
 /*
 ** change.c
 */
@@ -79,10 +83,12 @@ void		change_angle(t_mlx_data *md, char axis, float d_angle);
 void		change_scale(t_mlx_data *md, char obj, float d_scale);
 void		change_center(t_mlx_data *md, char axis, int ammount);
 void		change_color(t_mlx_data *md, char obj, unsigned int color);
+void		change_type(t_mlx_data *md, char obj);
 /*
 ** project.c
 */
-void		project(t_mlx_data *md);
+void		project_is(t_mlx_data *md);
+void		project_pe(t_mlx_data *md);
 void		rotate_z(t_mlx_data *md, float *xp, float *yp, float *zp);
 void		rotate_x(t_mlx_data *md, float *xp, float *yp, float *zp);
 void		rotate_y(t_mlx_data *md, float *xp, float *yp, float *zp);
@@ -90,8 +96,8 @@ void		rotate_y(t_mlx_data *md, float *xp, float *yp, float *zp);
 ** call_keys.c
 */
 void		call_keys_general(int keycode, t_mlx_data *md);
-void		call_keys_color_d(int keycode, t_mlx_data *md);
-void		call_keys_color_b(int keycode, t_mlx_data *md);
+void		call_keys_type(int keycode, t_mlx_data *md);
+void		display(t_mlx_data *md);
 int			call_keys(int keycode, t_mlx_data *md);
 /*
 ** call_keys_utils.c
@@ -100,7 +106,13 @@ void		call_keys_arrows(int keycode, t_mlx_data *md);
 void		call_keys_rotate(int keycode, t_mlx_data *md);
 void		call_keys_scale(int keycode, t_mlx_data *md);
 void		call_keys_center(int keycode, t_mlx_data *md);
-void		call_keys_color(int keycode, t_mlx_data *md);
+void	call_keys_camera(int keycode, t_mlx_data *md);
+/*
+** call_keys_color.c
+*/
+void		call_keys_color_l(int keycode, t_mlx_data *md);
+void		call_keys_color_d(int keycode, t_mlx_data *md);
+void		call_keys_color_b(int keycode, t_mlx_data *md);
 /*
 ** input.c
 */
@@ -117,6 +129,8 @@ void		print_matrix_str(char ***matrix_str, int m, int n);
 void		print_matrix_int(int **matrix, int m, int n);
 int			get_n(char *line);
 int			get_m_n(char *file_path, int *m, int *n);
+void		get_min_max(t_mlx_data *md);
+void		get_max_size(t_mlx_data *md);
 /*
 ** mlx_utils.c
 */
