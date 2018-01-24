@@ -6,23 +6,15 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 17:51:00 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 19:07:53 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
+void		init_md_input(t_mlx_data *md)
 {
-	static t_mlx_data	actual_md;
-	static t_img_prm	actual_ip;
-	static t_input		actual_input;
-
-	md = &actual_md;
-	md->ip = &actual_ip;
-	md->width = WIDTH;
-	md->height = HEIGHT;
-	md->in = &actual_input;
+	
 	md->in->c_x = WIDTH / 2;
 	md->in->c_y = HEIGHT / 2;
 	md->in->scale = +20;
@@ -35,12 +27,27 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	md->in->dots_color = RED;
 	md->in->back_color = BLACK;
 	md->in->dots_size = 0;
+}
+
+t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
+{
+	static t_mlx_data	actual_md;
+	static t_img_prm	actual_ip;
+	static t_input		actual_input;
+
+	md = &actual_md;
+	md->ip = &actual_ip;
+	md->in = &actual_input;
+	md->width = WIDTH;
+	md->height = HEIGHT;
+	init_md_input(md);
 	md->type = 'p';
 	md->mlx = mlx_init();
 	md->win = mlx_new_window(md->mlx, md->width, md->height, "fdf nmanzini");
 	make_image(md);
 	return (md);
 }
+
 /*
 ** dx = x2 - x1 = p2[0] - p1[0]
 ** dy = y2 - y1 = (p2[1] - p1[1])
@@ -50,10 +57,10 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 ** slope = dx / dy
 **
 ** while (i * i < dx * dx)
-	{
-		i += xs;
-		fill_pixel(md, i + p1[0], slope * i + p1[1], color);
-	}
+**	{
+**		i += xs;
+**		fill_pixel(md, i + p1[0], slope * i + p1[1], color);
+** }
 */
 
 void		line(t_mlx_data *md, int *p1, int *p2, unsigned int color)
@@ -120,8 +127,6 @@ int			main(int ac, char **av)
 	md = mlx_data_init_return(md);
 	if (read_input(md, ac, av))
 		return (1);
-	// project_pe(md);
-	// matrix_line(md, WHITE);
 	display(md);
 	mlx_key_hook(md->win, call_keys, md);
 	mlx_loop(md->mlx);

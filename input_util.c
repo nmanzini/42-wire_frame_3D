@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 13:49:31 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 18:19:18 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:59:20 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	get_min_max(t_mlx_data *md)
 	int i;
 	int j;
 	int value;
-	
+
 	max = md->in->matrix[0][0];
 	min = md->in->matrix[0][0];
 	i = 0;

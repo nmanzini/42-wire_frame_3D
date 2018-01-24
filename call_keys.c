@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:11:28 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 17:54:17 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 19:13:58 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	call_keys_general(int keycode, t_mlx_data *md)
 	{
 		ft_putendl("ESC		Bye bye!");
 		mlx_destroy_window(md->mlx, md->win);
+		// while (1)
+		// 	;
 		exit(0);
 	}
 	else if (keycode == 49)
@@ -45,7 +47,7 @@ void	display(t_mlx_data *md)
 {
 	if (md->type == 'i')
 		project_is(md);
-	else if(md->type == 'p')
+	else if (md->type == 'p')
 		project_pe(md);
 	img_square(md, md->in->back_color);
 	matrix_line(md, md->in->line_color);

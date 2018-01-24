@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:12:19 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 18:32:25 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 19:02:48 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	rotate_y(t_mlx_data *md, float *xp, float *yp, float *zp)
 	tempz = *zp;
 	*zp = tempz * cos(md->in->a_y * PR) - tempx * sin(md->in->a_y * PR);
 	*xp = tempz * sin(md->in->a_y * PR) + tempx * cos(md->in->a_y * PR);
-
 }
 
 /*
@@ -76,8 +75,8 @@ void	perspective_z(t_mlx_data *md, float *xp, float *yp, float *zp)
 	tempx = *xp;
 	tempy = *yp;
 	tempz = *zp;
-	*xp = tempx / tempz * md->in->cam_d_f * md->in->max_size ;
-	*yp = tempy / tempz * md->in->cam_d_f * md->in->max_size ;
+	*xp = tempx / tempz * md->in->cam_d_f * md->in->max_size;
+	*yp = tempy / tempz * md->in->cam_d_f * md->in->max_size;
 }
 
 void	project_pe(t_mlx_data *md)
@@ -95,8 +94,8 @@ void	project_pe(t_mlx_data *md)
 		j = 0;
 		while (j < md->in->m)
 		{
-			xp = i - md->in->n / 2 ;
-			yp = j - md->in->m / 2 ;
+			xp = i - md->in->n / 2;
+			yp = j - md->in->m / 2;
 			zp = md->in->matrix[j][i] * md->in->height;
 			rotate_z(md, &xp, &yp, &zp);
 			rotate_x(md, &xp, &yp, &zp);
@@ -110,9 +109,6 @@ void	project_pe(t_mlx_data *md)
 		i += 1;
 	}
 }
-
-
-
 
 void	project_is(t_mlx_data *md)
 {

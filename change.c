@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:14:06 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 18:32:24 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:40:54 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ void		change_scale(t_mlx_data *md, char obj, float d_scale)
 	else if (obj == 'c')
 	{
 		ft_putstr("Camera to ");
-		if (md->in->cam_d_f * d_scale  >= 0.5 && md->in->cam_d_f * d_scale  <= 1000)
-			md->in->cam_d_f *= d_scale ;
+		if (md->in->cam_d_f * d_scale  >= 0.5 &&
+		md->in->cam_d_f * d_scale  <= 1000)
+			md->in->cam_d_f *= d_scale;
 		ft_putnbr(md->in->cam_d_f);
 	}
 	ft_putchar(10);
@@ -99,7 +100,7 @@ void		change_color(t_mlx_data *md, char obj, unsigned int color)
 		md->in->dots_color = color;
 		ft_putnbr(md->in->dots_color);
 	}
-		else if (obj == 'b')
+	else if (obj == 'b')
 	{
 		ft_putstr("background to ");
 		md->in->back_color = color;

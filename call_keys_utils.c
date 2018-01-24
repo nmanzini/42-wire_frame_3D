@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:59:23 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 18:30:58 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 18:34:36 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ void	call_keys_camera(int keycode, t_mlx_data *md)
 	if (keycode == 92)
 	{
 		ft_putstr("9		");
-		change_scale(md, 'c', 1.5);
+		change_scale(md, 'c', 1.2);
 	}
 	else if (keycode == 88)
 	{
 		ft_putstr("6		");
-		change_scale(md, 'c', 0.75);
+		change_scale(md, 'c', 0.85);
 	}
 }
 
