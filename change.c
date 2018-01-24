@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:14:06 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/23 14:23:45 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 11:43:27 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,12 @@ void		change_color(t_mlx_data *md, char obj, unsigned int color)
 		ft_putstr("dots to ");
 		md->in->dots_color = color;
 		ft_putnbr(md->in->dots_color);
+	}
+		else if (obj == 'b')
+	{
+		ft_putstr("background to ");
+		md->in->back_color = color;
+		ft_putnbr(md->in->back_color);
 	}
 	ft_putnbr(color);
 	ft_putstr(".\n");

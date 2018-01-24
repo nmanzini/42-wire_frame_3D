@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 21:17:49 by nmanzini          #+#    #+#             */
-/*   Updated: 2017/12/14 15:35:06 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/12 14:09:09 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		str_process(char *input, char **result)
 
 int		get_next_line(const int fd, char **line)
 {
-	static char	*buff[12000];
+	static char	*buff[24000];
 	int			ret;
 
 	if (fd < 0 || !line || BUFF_SIZE <= 0)

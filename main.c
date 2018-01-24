@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/23 17:18:39 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 12:07:46 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	md->in->a_y = 20;
 	md->in->a_z = 20;
 	md->in->line_color = WHITE;
-	md->in->dots_color = BLUE;
+	md->in->dots_color = RED;
+	md->in->back_color = BLACK;
 	md->in->dots_size = 0;
 	md->mlx = mlx_init();
 	md->win = mlx_new_window(md->mlx, md->width, md->height, "fdf nmanzini");

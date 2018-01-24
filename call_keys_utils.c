@@ -6,36 +6,11 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:59:23 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/23 16:11:47 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/24 12:31:18 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	call_keys_general(int keycode, t_mlx_data *md)
-{
-	if (keycode == 53)
-	{
-		ft_putendl("ESC		Bye bye!");
-		mlx_destroy_window(md->mlx, md->win);
-		exit(0);
-	}
-	else if (keycode == 49)
-	{
-		ft_putstr("SPACE	");
-		img_square(md, BLACK);
-	}
-	else if (keycode == 14)
-	{
-		ft_putstr("E		");
-		change_angle(md, 'z', 10);
-	}
-	else if (keycode == 12)
-	{
-		ft_putstr("Q		");
-		change_angle(md, 'z', -10);
-	}
-}
 
 void	call_keys_arrows(int keycode, t_mlx_data *md)
 {
@@ -58,6 +33,20 @@ void	call_keys_arrows(int keycode, t_mlx_data *md)
 	{
 		ft_putstr("LEFT	");
 		change_angle(md, 'y', -10);
+	}
+}
+
+void	call_keys_rotate(int keycode, t_mlx_data *md)
+{
+	if (keycode == 14)
+	{
+		ft_putstr("E		");
+		change_angle(md, 'z', 10);
+	}
+	else if (keycode == 12)
+	{
+		ft_putstr("Q		");
+		change_angle(md, 'z', -10);
 	}
 }
 
