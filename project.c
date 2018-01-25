@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:12:19 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 19:02:48 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/25 17:29:00 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	perspective_z(t_mlx_data *md, float *xp, float *yp, float *zp)
 
 	tempx = *xp;
 	tempy = *yp;
-	tempz = *zp;
+	tempz = *zp - md->in->max_size * md->in->cam_d_f;
 	*xp = tempx / tempz * md->in->cam_d_f * md->in->max_size;
 	*yp = tempy / tempz * md->in->cam_d_f * md->in->max_size;
 }
@@ -88,7 +88,6 @@ void	project_pe(t_mlx_data *md)
 	float	zp;
 
 	i = 0;
-	j = 0;
 	while (i < md->in->n)
 	{
 		j = 0;
@@ -100,7 +99,7 @@ void	project_pe(t_mlx_data *md)
 			rotate_z(md, &xp, &yp, &zp);
 			rotate_x(md, &xp, &yp, &zp);
 			rotate_y(md, &xp, &yp, &zp);
-			zp  = zp - md->in->max_size * md->in->cam_d_f;
+			md->in->matrix_p[j][i][2] = (int)((zp + md->in->max_size) / md->in->max_size * md->in->dots_size);
 			perspective_z(md, &xp, &yp, &zp);
 			md->in->matrix_p[j][i][0] = (int)(md->in->c_x - xp * md->in->scale);
 			md->in->matrix_p[j][i][1] = (int)(md->in->c_y - yp * md->in->scale);
@@ -119,7 +118,6 @@ void	project_is(t_mlx_data *md)
 	float	zp;
 
 	i = 0;
-	j = 0;
 	while (i < md->in->n)
 	{
 		j = 0;
@@ -133,6 +131,7 @@ void	project_is(t_mlx_data *md)
 			rotate_y(md, &xp, &yp, &zp);
 			md->in->matrix_p[j][i][0] = (int)(md->in->c_x + xp * md->in->scale);
 			md->in->matrix_p[j][i][1] = (int)(md->in->c_y + yp * md->in->scale);
+			md->in->matrix_p[j][i][2] = (int)(md->in->dots_size);
 			j += 1;
 		}
 		i += 1;

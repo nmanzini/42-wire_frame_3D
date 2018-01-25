@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 11:31:43 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/25 16:57:28 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void		init_md_input(t_mlx_data *md)
 {
-	
 	md->in->c_x = WIDTH / 2;
 	md->in->c_y = HEIGHT / 2;
 	md->in->scale = +20;
@@ -88,8 +87,8 @@ void		line(t_mlx_data *md, int *p1, int *p2, unsigned int color)
 		i += xs;
 		fill_pixel(md, i / slope + p1[0], i + p1[1], color);
 	}
-	fill_dot(md, p1[0], p1[1], md->in->dots_size);
-	fill_dot(md, p2[0], p2[1], md->in->dots_size);
+	fill_dot(md, p1[0], p1[1], p1[2]);
+	fill_dot(md, p2[0], p2[1], p2[2]);
 }
 
 void		matrix_line(t_mlx_data *md, unsigned int color)

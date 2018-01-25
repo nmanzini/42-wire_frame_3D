@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 20:52:20 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 12:08:20 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/25 16:50:55 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,67 +16,64 @@
 ** Frees the list objects and the list itself
 */
 
-char	***get_str_matrices(int m, char *file_path)
+int		get_str_matrices(t_mlx_data *md, char *file_path)
 {
 	int		i;
 	int		fd;
 	char	*line;
-	char	***matrix_str;
 
 	fd = open(file_path, O_RDONLY);
 	if (fd == -1)
-		return (NULL);
+		return (-1);
 	i = 0;
-	matrix_str = (char***)malloc(sizeof(char**) * (m + 1));
-	while (i < m)
+	md->in->matrix_str = (char***)malloc(sizeof(char**) * md->in->m);
+	while (get_next_line(fd, &line) > 0)
 	{
-		get_next_line(fd, &line);
-		matrix_str[i] = ft_strsplit(line, ' ');
-		i++;
+		md->in->matrix_str[i++] = ft_strsplit(line, ' ');
 		free(line);
 	}
-	matrix_str[i] = NULL;
+	free(line);
 	if (close(fd) == -1)
-		return (NULL);
-	return (matrix_str);
+		return (-1);
+	return (0);
 }
 
-int		**str_to_int_matrix(int m, int n, char ***matrix_str)
+int		str_to_int_matrix(t_mlx_data *md)
 {
 	int i;
 	int j;
-	int **matrix;
 
-	matrix = (int**)malloc(sizeof(int*) * m);
+	md->in->matrix = (int**)malloc(sizeof(int*) * md->in->m);
 	i = 0;
-	while (i < m)
+	while (i < md->in->m)
 	{
-		matrix[i] = (int*)malloc(sizeof(int) * n);
+		md->in->matrix[i] = (int*)malloc(sizeof(int) * md->in->n);
 		j = 0;
-		while (j < n)
+		while (j < md->in->n)
 		{
-			if (!(matrix_str[i][j]))
-				return (NULL);
-			matrix[i][j] = ft_atoi(matrix_str[i][j]);
+			if (!(md->in->matrix_str[i][j]))
+				return (1);
+			md->in->matrix[i][j] = ft_atoi(md->in->matrix_str[i][j]);
 			j++;
 		}
 		i++;
 	}
-	return (matrix);
+	return (0);
 }
 
-int		**get_matrix(char *file_path, int *m, int *n)
+int		get_matrix(char *file_path, t_mlx_data *md)
 {
-	char	***matrix_str;
 	int		**matrix;
 
-	if (get_m_n(file_path, m, n))
-		return (NULL);
-	if (!(matrix_str = get_str_matrices(*m, file_path)))
-		return (NULL);
-	if (!(matrix = str_to_int_matrix(*m, *n, matrix_str)))
-		return (NULL);
-	return (matrix);
+	md->in->m = 0;
+	md->in->n = 0;
+	if (get_m_n(file_path, &md->in->m, &md->in->n))
+		return (1);
+	if (get_str_matrices(md, file_path))
+		return (1);
+	if (str_to_int_matrix(md))
+		return (1);
+	return (0);
 }
 
 int		***get_matrix_p(int m, int n, int o)
@@ -116,17 +113,14 @@ int		read_input(t_mlx_data *md, int ac, char **av)
 		ft_putstr("usage: ./fdf file.fdf\n");
 		return (1);
 	}
-	md->in->m = 0;
-	md->in->n = 0;
-	md->in->matrix = NULL;
-	if ((md->in->matrix = get_matrix(av[1], &md->in->m, &md->in->n)) == NULL)
+	if (get_matrix(av[1], md))
 	{
 		ft_putstr("Invalid File\n");
 		ft_putstr("usage: ./fdf file.fdf\n");
 		return (2);
 	}
 	get_max_size(md);
-	md->in->matrix_p = get_matrix_p(md->in->m, md->in->n, 2);
+	md->in->matrix_p = get_matrix_p(md->in->m, md->in->n, 3);
 	ft_putstr(av[1]);
 	ft_putstr(" loaded.\n");
 	return (0);

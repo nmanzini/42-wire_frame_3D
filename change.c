@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:14:06 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 10:39:57 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/25 17:18:32 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,23 @@ void		change_scale(t_mlx_data *md, char obj, float d_scale)
 	ft_putstr("Changing scale of");
 	if (obj == 'i')
 	{
-		ft_putstr("image to ");
+		ft_putstr(" Image to ");
 		if (md->in->scale + d_scale > 0)
 			md->in->scale += d_scale;
 		ft_putnbr(md->in->scale);
 	}
 	else if (obj == 'd')
 	{
-		ft_putstr("dots to ");
+		ft_putstr(" Dts to ");
 		if (md->in->dots_size + d_scale >= 0)
 			md->in->dots_size += d_scale;
 		ft_putnbr(md->in->dots_size);
 	}
 	else if (obj == 'c')
 	{
-		ft_putstr("Camera to ");
-		if (md->in->cam_d_f * d_scale  >= 0.1 &&
-		md->in->cam_d_f * d_scale  <= 1000)
+		ft_putstr(" Camera to ");
+		if (md->in->cam_d_f * d_scale >= 0.5 &&
+			md->in->cam_d_f * d_scale <= 1000)
 			md->in->cam_d_f *= d_scale;
 		ft_putnbr(md->in->cam_d_f);
 	}

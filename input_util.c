@@ -6,97 +6,54 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 13:49:31 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 12:04:41 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/25 17:59:28 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	list_str_free(char **list_str)
+int		string_c_length(char const *s, char c)
 {
-	while (*list_str != 0)
-		free(list_str++);
-	free(*list_str);
-}
+	int len;
 
-void	print_matrix_str(char ***matrix_str, int m, int n)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (i < m)
+	len = 0;
+	if (*s != c && *s != 0)
 	{
-		j = 0;
-		while (j < n)
-		{
-			ft_putstr(matrix_str[i][j]);
-			ft_putchar('\t');
-			j++;
-		}
-		ft_putchar(10);
-		i++;
+		len++;
+		s++;
 	}
-}
-
-void	print_matrix_int(int **matrix, int m, int n)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (i < m)
+	while (*s != 0)
 	{
-		j = 0;
-		while (j < n)
-		{
-			ft_putnbr(matrix[i][j]);
-			ft_putchar('\t');
-			j++;
-		}
-		ft_putchar(10);
-		i++;
+		if (*s != c && s[-1] == c)
+			len++;
+		s++;
 	}
-}
-
-int		get_n(char *line)
-{
-	int		n;
-	char	**list_str;
-
-	n = 0;
-	list_str = ft_strsplit(line, ' ');
-	while (list_str[n] != NULL)
-	{
-		n++;
-		free(list_str[n]);
-	}
-	free(list_str[n]);
-	return (n);
+	return (len);
 }
 
 int		get_m_n(char *file_path, int *m, int *n)
 {
 	int		fd;
 	char	*line;
-	int		n_old;
+	int		num;
 
-	n_old = 0;
 	fd = open(file_path, O_RDONLY);
 	if (fd == -1)
 		return (-1);
 	while (get_next_line(fd, &line) > 0)
 	{
 		*m = *m + 1;
+		num = string_c_length(line, ' ');
 		if (*n == 0)
-			*n = get_n(line);
-		else if (*n != get_n(line))
+			*n = num;
+		else if (*n != num)
 		{
 			ft_putendl("Error: missing data points");
 			return (-1);
 		}
 		free(line);
 	}
+	free(line);
 	if (close(fd) == -1)
 		return (-1);
 	return (0);
@@ -143,4 +100,5 @@ void	get_max_size(t_mlx_data *md)
 	max_size += md->in->n * md->in->n;
 	max_size += delta_z * delta_z;
 	md->in->max_size = sqrt(max_size);
+	md->in->scale = md->height / (float)md->in->max_size;
 }

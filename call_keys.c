@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:11:28 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 12:07:58 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/25 17:56:01 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,24 @@ void	call_keys_general(int keycode, t_mlx_data *md)
 {
 	if (keycode == 53)
 	{
-		ft_putendl("ESC		Bye bye!");
+		ft_putendl("ESC      Bye bye!");
 		mlx_destroy_window(md->mlx, md->win);
 		exit(0);
 	}
 	else if (keycode == 50)
 	{
-		ft_putendl("ESC		Bye bye!");
+		ft_putendl("ESC      Bye bye!");
 		mlx_destroy_window(md->mlx, md->win);
 		while (1)
 			;
 	}
-	else if (keycode == 49)
+	else if (keycode == 15)
 	{
-		ft_putstr("SPACE	");
-		img_square(md, BLACK);
+		ft_putstr("R		");
+		md->in->a_x = 0;
+		md->in->a_y = 0;
+		md->in->a_z = 0;
+		md->in->cam_d_f = 1;
 	}
 }
 
@@ -38,12 +41,12 @@ void	call_keys_type(int keycode, t_mlx_data *md)
 {
 	if (keycode == 35)
 	{
-		ft_putstr("P		");
+		ft_putstr("P        ");
 		change_type(md, 'p');
 	}
 	else if (keycode == 34)
 	{
-		ft_putstr("I		");
+		ft_putstr("I        ");
 		change_type(md, 'i');
 	}
 }
