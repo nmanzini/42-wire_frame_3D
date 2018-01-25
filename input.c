@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 20:52:20 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/24 19:13:51 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/25 12:08:20 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	***get_str_matrices(int m, char *file_path)
 		get_next_line(fd, &line);
 		matrix_str[i] = ft_strsplit(line, ' ');
 		i++;
+		free(line);
 	}
 	matrix_str[i] = NULL;
 	if (close(fd) == -1)
