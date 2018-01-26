@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 16:57:28 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/26 16:01:22 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	static t_mlx_data	actual_md;
 	static t_img_prm	actual_ip;
 	static t_input		actual_input;
+	static t_str		actual_str;
 
 	md = &actual_md;
 	md->ip = &actual_ip;
 	md->in = &actual_input;
+	md->st = &actual_str;
 	md->width = WIDTH;
 	md->height = HEIGHT;
 	init_md_input(md);
@@ -46,21 +48,6 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	make_image(md);
 	return (md);
 }
-
-/*
-** dx = x2 - x1 = p2[0] - p1[0]
-** dy = y2 - y1 = (p2[1] - p1[1])
-** xs = 1;
-** if (dx < 0)
-** 	xs = -1;
-** slope = dx / dy
-**
-** while (i * i < dx * dx)
-**	{
-**		i += xs;
-**		fill_pixel(md, i + p1[0], slope * i + p1[1], color);
-** }
-*/
 
 void		line(t_mlx_data *md, int *p1, int *p2, unsigned int color)
 {

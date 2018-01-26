@@ -6,7 +6,7 @@
 #    By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/29 17:51:18 by nmanzini          #+#    #+#              #
-#    Updated: 2018/01/24 15:42:32 by nmanzini         ###   ########.fr        #
+#    Updated: 2018/01/26 17:07:10 by nmanzini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ SRC = 	./main.c 				\
 		./input_util.c			\
 		./mlx_utils.c			\
 		./project.c				\
+		./rotation.c			\
+		./text.c				\
 
 OBJ = $(SRC:.c=.o)
 

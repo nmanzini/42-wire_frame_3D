@@ -1,0 +1,20 @@
+echo "---Making"
+make re
+echo "---Norming"
+norminette ./*.c ./*.h
+echo "---Testing"
+./fdf ./test_maps/10-2.fdf
+./fdf ./test_maps/10-70.fdf
+./fdf ./test_maps/100-6.fdf
+./fdf ./test_maps/20-60.fdf
+./fdf ./test_maps/42.fdf
+./fdf ./test_maps/50-4.fdf
+./fdf ./test_maps/basictest.fdf
+./fdf ./test_maps/elem.fdf
+./fdf ./test_maps/mars.fdf
+./fdf ./test_maps/pentenegpos.fdf
+./fdf ./test_maps/plat.fdf
+./fdf ./test_maps/pnp_flat.fdf
+./fdf ./test_maps/pylone.fdf
+./fdf ./test_maps/pyra.fdf
+./fdf ./test_maps/pyramide.fdf

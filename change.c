@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:14:06 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 17:18:32 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/26 15:57:08 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void		change_angle(t_mlx_data *md, char axis, float d_angle)
 	ft_putchar(axis);
 	ft_putstr(" axis angle of ");
 	ft_putnbr(d_angle);
-	ft_putstr("°. New angle = ");
+	ft_putstr("° New angle = ");
 	if (axis == 'x')
 	{
 		md->in->a_x += d_angle;
@@ -49,7 +49,7 @@ void		change_scale(t_mlx_data *md, char obj, float d_scale)
 	}
 	else if (obj == 'd')
 	{
-		ft_putstr(" Dts to ");
+		ft_putstr(" Dots to ");
 		if (md->in->dots_size + d_scale >= 0)
 			md->in->dots_size += d_scale;
 		ft_putnbr(md->in->dots_size);

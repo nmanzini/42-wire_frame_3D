@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:11:28 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 17:56:01 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/26 15:57:22 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	display(t_mlx_data *md)
 		project_pe(md);
 	img_square(md, md->in->back_color);
 	matrix_line(md, md->in->line_color);
+	put_strings(md);
 }
 
 int		call_keys(int keycode, t_mlx_data *md)

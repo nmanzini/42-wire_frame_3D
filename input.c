@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 20:52:20 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 16:50:55 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/26 17:04:49 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int		***get_matrix_p(int m, int n, int o)
 	int	i;
 	int	j;
 	int	k;
+	int t;
 	int	***matrix_p;
 
 	i = 0;
@@ -119,6 +120,7 @@ int		read_input(t_mlx_data *md, int ac, char **av)
 		ft_putstr("usage: ./fdf file.fdf\n");
 		return (2);
 	}
+	md->in->name = av[1];
 	get_max_size(md);
 	md->in->matrix_p = get_matrix_p(md->in->m, md->in->n, 3);
 	ft_putstr(av[1]);
