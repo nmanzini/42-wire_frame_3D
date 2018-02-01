@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:11:28 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/26 15:57:22 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 20:22:12 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@ void	call_keys_general(int keycode, t_mlx_data *md)
 {
 	if (keycode == 53)
 	{
-		ft_putendl("ESC      Bye bye!");
+		ft_putendl("ESC      Bye bye!\n");
 		mlx_destroy_window(md->mlx, md->win);
 		exit(0);
 	}
 	else if (keycode == 50)
 	{
-		ft_putendl("ESC      Bye bye!");
+		ft_putendl("ESC      Bye bye and may 0 leaks be with you\n");
 		mlx_destroy_window(md->mlx, md->win);
 		while (1)
 			;
 	}
 	else if (keycode == 15)
 	{
-		ft_putstr("R		");
+		ft_putendl("R	 RESET");
 		md->in->a_x = 0;
 		md->in->a_y = 0;
 		md->in->a_z = 0;

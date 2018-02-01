@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/26 16:01:22 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 18:13:34 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int			main(int ac, char **av)
 	md = mlx_data_init_return(md);
 	if (read_input(md, ac, av))
 		return (1);
+	ft_putendl("\nKEY	 ACTION");
 	display(md);
 	mlx_key_hook(md->win, call_keys, md);
 	mlx_loop(md->mlx);
