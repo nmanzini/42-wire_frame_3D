@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_keys_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nicola <nicola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 14:59:23 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/25 16:41:08 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/05/08 22:43:03 by nicola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ void	call_keys_rotate(int keycode, t_mlx_data *md)
 
 void	call_keys_scale(int keycode, t_mlx_data *md)
 {
-	if (keycode == 69)
+	if (keycode == 69 || keycode == 24)
 	{
 		ft_putstr("+        ");
 		change_scale(md, 'i', +1);
 	}
-	else if (keycode == 78)
+	else if (keycode == 78 || keycode == 27)
 	{
 		ft_putstr("-        ");
 		change_scale(md, 'i', -1);
