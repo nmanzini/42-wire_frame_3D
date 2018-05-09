@@ -16,5 +16,7 @@ It is possible to rotate the map with arrow keys and move it with (W,A,S,D). it 
 
 ![3d wire frame of a pyramid](imgs/pyramid.png)
 
+![3d wire frame of a 42](imgs/42.png)
+
 ![3d wire frame of a noisy grid](imgs/noise.png)
 
